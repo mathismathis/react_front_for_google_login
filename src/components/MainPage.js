@@ -4,12 +4,19 @@ import { Link, Route, Switch } from 'wouter';
 import ChatRoomPage from './ChatRoomPage';
 
 function MainPage({ userData, onLogout }) {
+
+  function handleLogout(e) {
+    // e.preventDefault();
+    localStorage.removeItem("sessionData");
+    onLogout();
+  }
+
   return (
     <div>
       <h2>Welcome, {userData?.name || 'User'}!</h2>
       <img src={userData?.photo_url} alt="User" />
       <p>Email: {userData?.email}</p>
-      <button onClick={onLogout}>Logout</button>
+      <button onClick={handleLogout}>Logout</button>
 
      
       <Link href="/create-room">Create Room</Link>

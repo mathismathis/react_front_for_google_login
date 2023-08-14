@@ -1,9 +1,14 @@
 import React from 'react';
 import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
 import axios from 'axios';
-import Cookies from 'js-cookie'; 
+import Cookies from 'js-cookie';
+import { useNavigate } from 'react-router-dom';
 
 function LoginPage({ onLogin }) {
+
+
+
+
   const handleLoginSuccess = async (credentialResponse) => {
     try {
       const response = await axios.post('http://127.0.0.1:8000/api/login/', {
@@ -18,7 +23,7 @@ function LoginPage({ onLogin }) {
         if (sessionData) {
           console.log('Retrieved Session Data:', JSON.parse(sessionData));
         }
-        
+
 
         console.log("Data to store:", userData.session_data);
         localStorage.setItem("sessionData", JSON.stringify(userData.session_data));
@@ -27,6 +32,8 @@ function LoginPage({ onLogin }) {
         console.log("Retrieved data:", retrievedData);
 
         onLogin(userData);
+
+
       } else {
         console.log('Authentication failed');
       }
@@ -35,9 +42,11 @@ function LoginPage({ onLogin }) {
     }
   };
 
-  const handleLoginError = () => {
-    console.log('Login Failed');
+  const handleLoginError = (error) => {
+    console.error('Error logging in:', error.message);
   };
+
+  const navigate = useNavigate();
 
   return (
     <div>
